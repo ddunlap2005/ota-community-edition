@@ -153,12 +153,17 @@ new_client() {
   local port=${DEVICE_PORT:-2222}
   local options="-o StrictHostKeyChecking=no"
 
+  echo "Updating device provisioning..."
   ssh ${options} "root@${addr}" -p "${port}" "echo \"${gateway} ota.ce\" >> /etc/hosts"
   # TODO: is this the correct server/root CA cert?
   scp -P "${port}" ${options} "${SERVER_DIR}/server_ca.pem" "root@${addr}:/var/sota/import/root.crt"
   scp -P "${port}" ${options} "${device_dir}/client.pem" "root@${addr}:/var/sota/import/client.pem"
   scp -P "${port}" ${options} "${device_dir}/pkey.pem" "root@${addr}:/var/sota/import/pkey.pem"
   scp -P "${port}" ${options} "${SERVER_DIR}/autoprov.url" "root@${addr}:/var/sota/import/gateway.url"
+  local timestamp=$(date -u +"%F %T")
+  echo "Updating device time to \"${timestamp}\""
+  ssh ${options} "root@${addr}" -p "${port}" "date -s \"${timestamp}\""
+  echo "...done"
 }
 
 new_server() {

@@ -11,6 +11,9 @@ campaigner_java_opts: '-Xmx200m'
 campaigner_mem: 250Mi
 
 device_registry_cpu: 80m
+device_registry_daemon_cpu: 80m
+device_registry_daemon_java_opts: "-Xmx250m"
+device_registry_daemon_mem: 300Mi
 device_registry_java_opts: "-Xmx250m"
 device_registry_mem: 300Mi
 

@@ -2,16 +2,16 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: device-registry-config
+  name: device-registry-daemon-config
 data:
   AUTH_PROTOCOL: none
   BIND_HOST: 0.0.0.0
   BIND_PORT: '9001'
   DB_MIGRATE: 'true'
   DB_URL: jdbc:mariadb://{{ .mysql_host }}:3306/device_registry
-  DB_USER: {{ .device_registry_db_user }}
+  DB_USER: {{ .device_registry_daemon_db_user }}
   ENV_PREFIX: {{ .env_prefix }}
-  JAVA_OPTS: {{ .device_registry_java_opts }}
+  JAVA_OPTS: {{ .device_registry_daemon_java_opts }}
   REPORT_METRICS: "false"
   DIRECTOR_HOST: director
   DIRECTOR_PORT: '80'
@@ -37,7 +37,7 @@ spec:
 {{ end }}
       containers:
       - name: device-registry-daemon
-        image: {{ .device_registry_docker_image }}
+        image: {{ .device_registry_daemon_docker_image }}
         args:
         - "-main"
         - com.advancedtelematic.ota.deviceregistry.DaemonBoot
@@ -45,15 +45,15 @@ spec:
         - configMapRef:
             name: kafka-shared
         - configMapRef:
-            name: device-registry-config
+            name: device-registry-daemon-config
         - secretRef:
-            name: device-registry-secret
+            name: device-registry-daemon-secret
         ports:
         - containerPort: 9001
         resources:
           requests:
-            cpu: {{ .device_registry_cpu }}
-            memory: {{ .device_registry_mem }}
+            cpu: {{ .device_registry_daemon_cpu }}
+            memory: {{ .device_registry_daemon_mem }}
         livenessProbe:
           initialDelaySeconds: 300
           periodSeconds: 30
@@ -64,7 +64,7 @@ spec:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: device-registry-secret
+  name: device-registry-daemon-secret
 type: Opaque
 data:
-  DB_PASSWORD: {{ .device_registry_db_password | b64enc }}
+  DB_PASSWORD: {{ .device_registry_daemon_db_password | b64enc }}

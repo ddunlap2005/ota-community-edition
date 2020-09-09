@@ -6,11 +6,8 @@ metadata:
 data:
   AUTH_PLUS_HOST: auth-plus
   AUTH_PLUS_PORT: '80'
-  AUTH_PROTOCOL: none
-  AUTH_VERIFICATION: local
   CAMPAIGNER_HOST: campaigner
   CAMPAIGNER_PORT: '80'
-  CRYPT_CREATE_ACCOUNTS: "false"
   DEVICE_GATEWAY_PORT: '8000'
   DEVICE_REGISTRY_HOST: device-registry
   DEVICE_REGISTRY_PORT: '80'
@@ -23,7 +20,6 @@ data:
   OIDC_LOGOUT_ACTION: com.advancedtelematic.auth.garage.NoLogoutAction
   OIDC_NS_PROVIDER: com.advancedtelematic.auth.oidc.ConfiguredNamespace
   OIDC_TOKEN_EXCHANGE: com.advancedtelematic.auth.NoExchange
-  OIDC_TOKEN_VERIFICATION: com.advancedtelematic.auth.oidc.TokenValidityCheck
   PACKAGES_VERSION_FORMAT: ".+"
   PLAY_HTTP_SESSION_SECURE: 'false'
   REPORT_METRICS: "false"

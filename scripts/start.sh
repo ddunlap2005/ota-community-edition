@@ -162,7 +162,10 @@ new_client() {
   scp -P "${port}" ${options} "${SERVER_DIR}/autoprov.url" "root@${addr}:/var/sota/import/gateway.url"
   local timestamp=$(date -u +"%F %T")
   echo "Updating device time to \"${timestamp}\""
-  ssh ${options} "root@${addr}" -p "${port}" "date -s \"${timestamp}\""
+  ssh ${options} "root@${addr}" -p "${port}" "date -s \"${timestamp}\";hwclock --systohc"
+  echo "Starting aktualizr service"
+  ssh ${options} "root@${addr}" -p "${port}" "systemctl enable aktualizr.service"
+  ssh ${options} "root@${addr}" -p "${port}" "systemctl start aktualizr.service"
   echo "...done"
 }
 
